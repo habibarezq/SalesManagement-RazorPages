@@ -81,13 +81,8 @@ SalesManagement/
 
    In Visual Studio, press **F5** or click the green **https** button.
 
-## Screenshots
-
-_Add screenshots of your app here, for example:_
-
-```markdown
-![Home page](../docs/home.png)
-```
+### Home Page View
+![Home page](docs/home.png)
 
 ## Roadmap
 
