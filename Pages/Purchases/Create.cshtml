@@ -1,0 +1,25 @@
+@page
+@model SalesManagement.Pages.Purchases.CreateModel
+@{
+    ViewData["Title"] = "New purchase";
+}
+
+<div class="page-header">
+    <h1 class="page-title">New purchase</h1>
+</div>
+
+<div class="card form-card">
+    <div class="card-body">
+        <form method="post">
+            <div class="mb-3">
+                <label asp-for="SupplierId" class="form-label">Supplier</label>
+                <select asp-for="SupplierId" asp-items="Model.Suppliers" class="form-select">
+                    <option value="">Choose a supplier</option>
+                </select>
+                <span asp-validation-for="SupplierId" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Create invoice</button>
+            <a asp-page="Index" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

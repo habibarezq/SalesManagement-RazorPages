@@ -1,0 +1,40 @@
+@page
+@model SalesManagement.Pages.Suppliers.AddSupplierModel
+@{
+    ViewData["Title"] = "Add supplier";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Add supplier</h1>
+</div>
+
+<div class="card form-card">
+    <div class="card-body">
+        <form method="post">
+            <div class="mb-3">
+                <label asp-for="newSupplier.Name" class="form-label">Name</label>
+                <input asp-for="newSupplier.Name" class="form-control" />
+                <span asp-validation-for="newSupplier.Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="newSupplier.Address" class="form-label">Address</label>
+                <input asp-for="newSupplier.Address" class="form-control" />
+                <span asp-validation-for="newSupplier.Address" class="text-danger"></span>
+            </div>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label asp-for="newSupplier.Phone" class="form-label">Phone</label>
+                    <input asp-for="newSupplier.Phone" class="form-control" />
+                    <span asp-validation-for="newSupplier.Phone" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="newSupplier.Email" class="form-label">Email</label>
+                    <input asp-for="newSupplier.Email" class="form-control" />
+                    <span asp-validation-for="newSupplier.Email" class="text-danger"></span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save supplier</button>
+            <a asp-page="Index" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

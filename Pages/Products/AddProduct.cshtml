@@ -1,0 +1,45 @@
+@page
+@model SalesManagement.Pages.Products.AddProductModel
+@{
+    ViewData["Title"] = "Add product";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Add product</h1>
+</div>
+
+<div class="card form-card">
+    <div class="card-body">
+        <form method="post">
+            <div class="mb-3">
+                <label asp-for="newProduct.Name" class="form-label">Name</label>
+                <input asp-for="newProduct.Name" class="form-control" />
+                <span asp-validation-for="newProduct.Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="newProduct.CategoryId" class="form-label">Category</label>
+                <select asp-for="newProduct.CategoryId" asp-items="Model.Categories" class="form-select">
+                    <option value="">Choose a category</option>
+                </select>
+                <span asp-validation-for="newProduct.CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-6">
+                    <label asp-for="newProduct.Quantity" class="form-label">Quantity in stock</label>
+                    <input asp-for="newProduct.Quantity" class="form-control" />
+                    <span asp-validation-for="newProduct.Quantity" class="text-danger"></span>
+                </div>
+                <div class="col-6">
+                    <label asp-for="newProduct.Price" class="form-label">Selling price</label>
+                    <input asp-for="newProduct.Price" class="form-control" />
+                    <span asp-validation-for="newProduct.Price" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save product</button>
+            <a asp-page="Index" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+@page
+@model SalesManagement.Pages.Customers.IndexModel
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Customers</h1>
+    <a class="btn btn-primary" asp-page="AddCustomer">Add customer</a>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model.customers)
+                {
+                    <tr>
+                        <td>@customer.Name</td>
+                        <td>@customer.Address</td>
+                        <td>@customer.Phone</td>
+                        <td>@customer.Email</td>
+                        <td>
+                            <div class="row-actions">
+                                <a asp-page="EditCustomer" asp-route-id="@customer.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@customer.Id"
+                                      data-confirm="@($"Delete {customer.Name}?")">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.customers.Any())
+                {
+                    <tr><td colspan="5" class="empty">No customers yet. Add your first customer.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

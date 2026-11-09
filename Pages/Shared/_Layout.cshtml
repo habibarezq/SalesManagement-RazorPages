@@ -1,0 +1,72 @@
+@{
+    var path = Context.Request.Path.Value ?? "/"; //It's a local function in the layout that compares the request path to each section's URL prefix, 
+    // so the current section is highlighted on all of its pages.
+    string Active(string prefix) =>
+        path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sales Manager</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SalesManagement.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg app-nav">
+            <div class="container">
+                <a class="navbar-brand" asp-page="/Index">Sales Manager</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link @(path == "/" ? "active" : "")" asp-page="/Index">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link @(Active("/Sales"))" asp-page="/Sales/Index">Sales</a></li>
+                        <li class="nav-item"><a class="nav-link @(Active("/Purchases"))" asp-page="/Purchases/Index">Purchases</a></li>
+                        <li class="nav-item"><a class="nav-link @(Active("/Products"))" asp-page="/Products/Index">Products</a></li>
+                        <li class="nav-item"><a class="nav-link @(Active("/Categories"))" asp-page="/Categories/Index">Categories</a></li>
+                        <li class="nav-item"><a class="nav-link @(Active("/Customers"))" asp-page="/Customers/Index">Customers</a></li>
+                        <li class="nav-item"><a class="nav-link @(Active("/Suppliers"))" asp-page="/Suppliers/Index">Suppliers</a></li>
+                        <li class="nav-item"><a class="nav-link @(Active("/Stock"))" asp-page="/Stock/Index">Stock</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main">
+            @if (TempData["Success"] is string msg)
+            {
+                <div class="alert alert-success alert-dismissible fade show mt-3 mb-0" role="alert">
+                    @msg
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (TempData["Error"] is string err)
+            {
+                <div class="alert alert-danger alert-dismissible fade show mt-3 mb-0" role="alert">
+                    @err
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="app-footer">
+        <div class="container">&copy; 2026 Sales Manager</div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

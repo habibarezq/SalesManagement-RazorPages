@@ -1,0 +1,50 @@
+@page
+@model SalesManagement.Pages.Suppliers.SuppliersModel
+@{
+    ViewData["Title"] = "Suppliers";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Suppliers</h1>
+    <a class="btn btn-primary" asp-page="AddSupplier">Add supplier</a>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var supplier in Model.suppliers)
+                {
+                    <tr>
+                        <td>@supplier.Name</td>
+                        <td>@supplier.Address</td>
+                        <td>@supplier.Phone</td>
+                        <td>@supplier.Email</td>
+                        <td>
+                            <div class="row-actions">
+                                <a asp-page="EditSupplier" asp-route-id="@supplier.SupplierId" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@supplier.SupplierId"
+                                      data-confirm="@($"Delete {supplier.Name}?")">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.suppliers.Any())
+                {
+                    <tr><td colspan="5" class="empty">No suppliers yet. Add your first supplier.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

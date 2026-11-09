@@ -1,0 +1,116 @@
+@page "{id:int}"
+@model SalesManagement.Pages.Purchases.DetailsModel
+@{
+    ViewData["Title"] = "Purchase #" + Model.Invoice.InvoiceId;
+}
+
+<a class="back-link" asp-page="Index">Back to purchases</a>
+<div class="page-header">
+    <h1 class="page-title">Purchase #@Model.Invoice.InvoiceId</h1>
+    <div class="d-flex gap-2">
+        @if (Model.CurrentStatus == "Pending")
+        {
+            <form method="post" asp-page-handler="Pay" asp-route-id="@Model.Invoice.InvoiceId">
+                <button class="btn btn-primary">Mark as paid</button>
+            </form>
+        }
+        @if (Model.CurrentStatus == "Pending" || Model.CurrentStatus == "Paid")
+        {
+            <form method="post" asp-page-handler="Cancel" asp-route-id="@Model.Invoice.InvoiceId"
+                  data-confirm="Cancel this invoice?">
+                <button class="btn btn-outline-danger">Cancel invoice</button>
+            </form>
+        }
+    </div>
+</div>
+
+<div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="meta">
+            <div><dt>Supplier</dt><dd>@Model.Invoice.Supplier.Name</dd></div>
+            <div><dt>Date</dt><dd>@Model.Invoice.Date.ToString("yyyy-MM-dd HH:mm")</dd></div>
+            <div><dt>Status</dt><dd><partial name="_StatusBadge" model="Model.CurrentStatus" /></dd></div>
+        </dl>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="table-responsive">
+        <table class="table data-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th class="num">Qty</th>
+                    <th class="num">Unit cost</th>
+                    <th class="num">Line total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Invoice.PurchaseInvoiceItems)
+                {
+                    <tr>
+                        <td>@item.Product.Name</td>
+                        <td class="num">@item.Quantity</td>
+                        <td class="num">@item.Price.ToString("N2")</td>
+                        <td class="num">@((item.Quantity * item.Price).ToString("N2"))</td>
+                        <td class="text-end">
+                            @if (Model.CurrentStatus == "Pending")
+                            {
+                                <form method="post" asp-page-handler="RemoveItem" asp-route-id="@Model.Invoice.InvoiceId" asp-route-productId="@item.ProductId">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Invoice.PurchaseInvoiceItems.Any())
+                {
+                    <tr><td colspan="5" class="empty">No items yet. Add a product below.</td></tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3" class="num">Total</th>
+                    <th class="num">@Model.Total.ToString("N2")</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+@if (Model.CurrentStatus == "Pending")
+{
+    <div class="card">
+        <div class="card-header"><h2 class="card-title-sm">Add item</h2></div>
+        <div class="card-body">
+            <form method="post" asp-page-handler="AddItem" asp-route-id="@Model.Invoice.InvoiceId">
+                <div class="row g-3 align-items-start">
+                    <div class="col-md-5">
+                        <label asp-for="Input.ProductId" class="form-label">Product</label>
+                        <select asp-for="Input.ProductId" asp-items="Model.Products" class="form-select">
+                            <option value="">Choose a product</option>
+                        </select>
+                        <span asp-validation-for="Input.ProductId" class="text-danger"></span>
+                    </div>
+                    <div class="col-6 col-md-2">
+                        <label asp-for="Input.Quantity" class="form-label">Quantity</label>
+                        <input asp-for="Input.Quantity" class="form-control" />
+                        <span asp-validation-for="Input.Quantity" class="text-danger"></span>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <label asp-for="Input.UnitPrice" class="form-label">Unit cost</label>
+                        <input asp-for="Input.UnitPrice" class="form-control" />
+                        <span asp-validation-for="Input.UnitPrice" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end" style="min-height: 4.4rem;">
+                        <button type="submit" class="btn btn-primary w-100">Add item</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}

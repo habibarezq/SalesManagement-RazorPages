@@ -1,0 +1,45 @@
+@page "{id:int}"
+@model SalesManagement.Pages.Products.EditProductModel
+@{
+    ViewData["Title"] = "Edit product";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Edit product</h1>
+</div>
+
+<div class="card form-card">
+    <div class="card-body">
+        <form method="post">
+            <input type="hidden" asp-for="Product.ProductId" />
+
+            <div class="mb-3">
+                <label asp-for="Product.Name" class="form-label">Name</label>
+                <input asp-for="Product.Name" class="form-control" />
+                <span asp-validation-for="Product.Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Product.CategoryId" class="form-label">Category</label>
+                <select asp-for="Product.CategoryId" asp-items="Model.Categories" class="form-select"></select>
+                <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-6">
+                    <label asp-for="Product.Quantity" class="form-label">Quantity in stock</label>
+                    <input asp-for="Product.Quantity" class="form-control" />
+                    <span asp-validation-for="Product.Quantity" class="text-danger"></span>
+                </div>
+                <div class="col-6">
+                    <label asp-for="Product.Price" class="form-label">Selling price</label>
+                    <input asp-for="Product.Price" class="form-control" />
+                    <span asp-validation-for="Product.Price" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            <a asp-page="Index" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

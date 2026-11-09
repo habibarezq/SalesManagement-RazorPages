@@ -1,0 +1,46 @@
+@page
+@model SalesManagement.Pages.Purchases.IndexModel
+@{
+    ViewData["Title"] = "Purchases";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Purchases</h1>
+    <a class="btn btn-primary" asp-page="Create">New invoice</a>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Supplier</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th class="num">Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Model.Invoices)
+                {
+                    <tr>
+                        <td>@row.InvoiceId</td>
+                        <td>@row.SupplierName</td>
+                        <td>@row.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td><partial name="_StatusBadge" model="row.Status" /></td>
+                        <td class="num">@row.Total.ToString("N2")</td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-primary" asp-page="Details" asp-route-id="@row.InvoiceId">View</a>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Invoices.Any())
+                {
+                    <tr><td colspan="6" class="empty">No purchases yet. Create an invoice to get started.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

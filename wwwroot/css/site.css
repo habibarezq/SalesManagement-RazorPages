@@ -1,0 +1,167 @@
+/* ---------- Design tokens ---------- */
+:root {
+  --ink: #1f2933;
+  --muted: #6b7785;
+  --line: #e2e7ec;
+  --bg: #f3f5f7;
+  --surface: #ffffff;
+  --accent: #0e6b63;
+  --accent-dark: #0a544e;
+  --accent-soft: #e3f2f0;
+  --danger-ink: #a3281b;
+  --radius: 10px;
+}
+
+/* ---------- Base ---------- */
+html { font-size: 15px; }
+@media (min-width: 768px) { html { font-size: 16px; } }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main { flex: 1; }
+
+a { color: var(--accent); }
+a:hover { color: var(--accent-dark); }
+
+/* Bootstrap 5.1 lacks this utility; the old layout used it */
+.fw-semibold { font-weight: 600 !important; }
+
+/* Hides the empty red box asp-validation-summary renders when there are no errors */
+.validation-summary-valid { display: none; }
+
+/* ---------- Navbar ---------- */
+.app-nav { background: var(--surface); border-bottom: 1px solid var(--line); }
+.app-nav .navbar-brand { font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+.app-nav .navbar-brand::before {
+  content: "";
+  display: inline-block;
+  width: .7rem; height: .7rem;
+  background: var(--accent);
+  border-radius: 3px;
+  margin-right: .5rem;
+}
+.app-nav .nav-link {
+  color: var(--muted);
+  font-weight: 500;
+  padding: 1.05rem .8rem;
+  border-bottom: 2px solid transparent;
+}
+.app-nav .nav-link:hover { color: var(--ink); }
+.app-nav .nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+@media (max-width: 991.98px) {
+  .app-nav .nav-link { padding: .6rem .25rem; }
+}
+
+/* ---------- Page header ---------- */
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin: 1.75rem 0 1.25rem;
+}
+.page-title { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; margin: 0; }
+.back-link { display: inline-block; margin-top: 1.5rem; color: var(--muted); text-decoration: none; font-size: .9rem; }
+.back-link:hover { color: var(--ink); }
+.back-link + .page-header { margin-top: .5rem; }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .04);
+}
+.card-header, .card-footer { background: transparent; border-color: var(--line); }
+.card-title-sm { font-size: 1rem; font-weight: 600; margin: 0; }
+.form-card { max-width: 560px; }
+
+/* ---------- Tables ---------- */
+.data-table { margin: 0; --bs-table-hover-bg: #f6faf9; }
+.data-table thead th {
+  background: #f8fafb;
+  color: var(--muted);
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .7rem 1rem;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.data-table td { padding: .75rem 1rem; vertical-align: middle; border-color: var(--line); }
+.data-table tfoot th, .data-table tfoot td {
+  padding: .8rem 1rem;
+  border-top: 2px solid var(--line);
+  border-bottom: 0;
+  font-weight: 700;
+}
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.row-actions { display: flex; gap: .4rem; justify-content: flex-end; }
+.row-actions form { margin: 0; }
+.empty { padding: 2.5rem 1rem; text-align: center; color: var(--muted); }
+
+/* ---------- Status pills ---------- */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .2rem .65rem;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.status::before {
+  content: "";
+  width: .45rem; height: .45rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+.status-paid      { background: #e1f4e8; color: #17653a; }
+.status-pending   { background: #fdf1d6; color: #8a5a00; }
+.status-cancelled { background: #eceff2; color: #5b6672; }
+.status-low       { background: #fde7e4; color: var(--danger-ink); }
+.qty-low { color: var(--danger-ink); font-weight: 600; }
+
+/* ---------- Dashboard ---------- */
+.stat { padding: 1rem 1.25rem; height: 100%; }
+.stat-label { color: var(--muted); font-size: .85rem; margin-bottom: .25rem; }
+.stat-value { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.stat-warn .stat-value { color: var(--danger-ink); }
+
+/* ---------- Invoice details ---------- */
+.meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin: 0; }
+.meta dt { font-size: .8rem; font-weight: 500; color: var(--muted); }
+.meta dd { margin: 0; font-weight: 600; }
+
+/* ---------- Buttons ---------- */
+.btn { border-radius: 8px; font-weight: 500; }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background: var(--accent-dark); border-color: var(--accent-dark); color: #fff;
+}
+.btn-outline-primary { color: var(--accent); border-color: var(--accent); }
+.btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
+.btn-outline-secondary { color: var(--ink); border-color: #cbd2d9; }
+.btn-outline-secondary:hover { background: #eef1f4; color: var(--ink); border-color: #cbd2d9; }
+.btn:focus, .btn:active:focus { box-shadow: 0 0 0 .2rem rgba(14, 107, 99, .25); }
+
+/* ---------- Forms ---------- */
+.form-label { font-weight: 500; font-size: .9rem; }
+.form-control, .form-select { border-radius: 8px; border-color: #cbd2d9; }
+.form-control:focus, .form-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 .2rem rgba(14, 107, 99, .18);
+}
+
+/* ---------- Alerts & footer ---------- */
+.alert { border-radius: 8px; }
+.app-footer { border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; padding: 1rem 0; margin-top: 2rem; }

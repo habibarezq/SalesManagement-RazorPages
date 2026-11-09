@@ -1,0 +1,111 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Dashboard</h1>
+    <div class="d-flex gap-2">
+        <a class="btn btn-primary" asp-page="/Sales/Create">New sale</a>
+        <a class="btn btn-outline-secondary" asp-page="/Purchases/Create">New purchase</a>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="card stat">
+            <div class="stat-label">Paid sales</div>
+            <div class="stat-value">@Model.PaidRevenue.ToString("N2")</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card stat">
+            <div class="stat-label">Pending sales</div>
+            <div class="stat-value">@Model.PendingSales</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card stat">
+            <div class="stat-label">Pending purchases</div>
+            <div class="stat-value">@Model.PendingPurchases</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card stat @(Model.LowStockCount > 0 ? "stat-warn" : "")">
+            <div class="stat-label">Low or out of stock</div>
+            <div class="stat-value">@Model.LowStockCount</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="card-title-sm">Recent sales</h2>
+                <a asp-page="/Sales/Index">View all</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover data-table">
+                    <thead>
+                        <tr><th>#</th><th>Customer</th><th>Status</th><th class="num">Total</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var s in Model.RecentSales)
+                        {
+                            <tr>
+                                <td><a asp-page="/Sales/Details" asp-route-id="@s.InvoiceId">@s.InvoiceId</a></td>
+                                <td>@s.CustomerName</td>
+                                <td><partial name="_StatusBadge" model="s.Status" /></td>
+                                <td class="num">@s.Total.ToString("N2")</td>
+                            </tr>
+                        }
+                        @if (!Model.RecentSales.Any())
+                        {
+                            <tr><td colspan="4" class="empty">No sales yet. Create your first invoice.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="card-title-sm">Needs restocking</h2>
+                <a asp-page="/Products/Index">All products</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table data-table">
+                    <thead>
+                        <tr><th>Product</th><th class="num">In stock</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.LowStock)
+                        {
+                            <tr>
+                                <td>@p.Name</td>
+                                <td class="num">
+                                    @if (p.Quantity == 0)
+                                    {
+                                        <span class="status status-low">Out of stock</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="qty-low">@p.Quantity</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        @if (!Model.LowStock.Any())
+                        {
+                            <tr><td colspan="2" class="empty">Every product is well stocked.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

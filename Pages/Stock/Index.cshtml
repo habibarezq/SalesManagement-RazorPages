@@ -1,0 +1,65 @@
+@page
+@model SalesManagement.Pages.Stock.IndexModel
+@{
+    ViewData["Title"] = "Stock history";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Stock history</h1>
+    <form method="get" class="d-flex gap-2">
+        <select asp-for="ProductId" asp-items="Model.Products" class="form-select">
+            <option value="">All products</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a asp-page="Index" class="btn btn-outline-secondary">Reset</a>
+    </form>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover data-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th class="num">Change</th>
+                    <th>Reason</th>
+                    <th>Invoice</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model.Movements)
+                {
+                    <tr>
+                        <td>@m.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@m.ProductName</td>
+                        <td class="num">
+                            <span class="@(m.QuantityChange < 0 ? "qty-low" : "text-success") fw-semibold">
+                                @(m.QuantityChange > 0 ? "+" : "")@m.QuantityChange
+                            </span>
+                        </td>
+                        <td>@m.Reason</td>
+                        <td>
+                            @if (m.SalesInvoiceId.HasValue)
+                            {
+                                <a asp-page="/Sales/Details" asp-route-id="@m.SalesInvoiceId">Sale #@m.SalesInvoiceId</a>
+                            }
+                            else if (m.PurchaseInvoiceId.HasValue)
+                            {
+                                <a asp-page="/Purchases/Details" asp-route-id="@m.PurchaseInvoiceId">Purchase #@m.PurchaseInvoiceId</a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Manual</span>
+                            }
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Movements.Any())
+                {
+                    <tr><td colspan="5" class="empty">No stock movements yet.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

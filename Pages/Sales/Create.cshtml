@@ -1,0 +1,25 @@
+@page
+@model SalesManagement.Pages.Sales.CreateModel
+@{
+    ViewData["Title"] = "New sale";
+}
+
+<div class="page-header">
+    <h1 class="page-title">New sale</h1>
+</div>
+
+<div class="card form-card">
+    <div class="card-body">
+        <form method="post">
+            <div class="mb-3">
+                <label asp-for="CustomerId" class="form-label">Customer</label>
+                <select asp-for="CustomerId" asp-items="Model.Customers" class="form-select">
+                    <option value="">Choose a customer</option>
+                </select>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Create invoice</button>
+            <a asp-page="Index" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

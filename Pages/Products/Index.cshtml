@@ -1,0 +1,65 @@
+@page
+@model SalesManagement.Pages.Products.IndexModel
+@{
+    ViewData["Title"] = "Products";
+    const int lowStock = 5;
+}
+
+<div class="page-header">
+    <h1 class="page-title">Products</h1>
+    <a class="btn btn-primary" asp-page="AddProduct">Add product</a>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th class="num">In stock</th>
+                    <th class="num">Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model.products)
+                {
+                    <tr>
+                        <td>@product.Name</td>
+                        <td>@product.Category?.Name</td>
+                        <td class="num">
+                            @if (product.Quantity == 0)
+                            {
+                                <span class="status status-low">Out of stock</span>
+                            }
+                            else if (product.Quantity <= lowStock)
+                            {
+                                <span class="qty-low">@product.Quantity</span>
+                                <span class="status status-pending ms-1">Low</span>
+                            }
+                            else
+                            {
+                                @product.Quantity
+                            }
+                        </td>
+                        <td class="num">@product.Price.ToString("N2")</td>
+                        <td>
+                            <div class="row-actions">
+                                <a asp-page="EditProduct" asp-route-id="@product.ProductId" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@product.ProductId"
+                                      data-confirm="@($"Delete {product.Name}?")">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.products.Any())
+                {
+                    <tr><td colspan="5" class="empty">No products yet. Add your first product.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
