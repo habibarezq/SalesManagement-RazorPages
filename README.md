@@ -86,7 +86,7 @@ SalesManagement/
 _Add screenshots of your app here, for example:_
 
 ```markdown
-![Home page](docs/home.png)
+![Home page](../docs/home.png)
 ```
 
 ## Roadmap
